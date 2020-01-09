@@ -171,22 +171,40 @@ class Graph:
         This should be done using recursion.
         """
         visited = set()
-        valid_paths = []
 
-        def dfs_helper(path):
+        def recursive_helper(path):
+            # check to see if last member of list is our destination_vertex
             if path[-1] == destination_vertex:
-                valid_paths.append(path)
-                return
-            elif path[-1] not in visited:
-                visited.add(path[-1])
-                for neighbor in self.vertices[path[-1]]:
-                    new_path = path[:]
-                    new_path.append(neighbor)
-                    dfs_helper(new_path)
-            else:
-                return
-        dfs_helper([starting_vertex])
-        return random.choice(valid_paths)
+                return path
+            # add the last member of the path list to the visited set
+            visited.add(path[-1])
+            # for each connected vertice to the last integer of the path list
+            for neighbor in self.get_neighbors(path[-1]):
+                if neighbor not in visited:
+                    # create a new list with the neighbor at the end
+                    path_copy = [*path, neighbor]
+                    new_path = recursive_helper(path_copy)
+                    if new_path is not None:
+                        return new_path
+            return None
+
+        return recursive_helper([starting_vertex])
+        # valid_paths = []
+
+        # def dfs_helper(path):
+        #     if path[-1] == destination_vertex:
+        #         valid_paths.append(path)
+        #         return
+        #     elif path[-1] not in visited:
+        #         visited.add(path[-1])
+        #         for neighbor in self.vertices[path[-1]]:
+        #             new_path = path[:]
+        #             new_path.append(neighbor)
+        #             dfs_helper(new_path)
+        #     else:
+        #         return
+        # dfs_helper([starting_vertex])
+        # return random.choice(valid_paths)
 
 
 if __name__ == '__main__':
@@ -241,7 +259,7 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     # graph.dft(1)
-    graph.dft_recursive(1)
+    # graph.dft_recursive(1)
 
     '''
     Valid BFS path:
@@ -255,4 +273,4 @@ if __name__ == '__main__':
         [1, 2, 4, 7, 6]
     '''
     # print(graph.dfs(1, 6))
-    # print(graph.dfs_recursive(1, 6))
+    print(graph.dfs_recursive(1, 6))
