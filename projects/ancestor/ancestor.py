@@ -15,3 +15,4 @@ def earliest_ancestor(ancestors, starting_node):
         # add all of its neighbors to the stack
         for ancestor_node in ancestors[vertex]:
             stack.append(ancestor_node)
+            # hello?
