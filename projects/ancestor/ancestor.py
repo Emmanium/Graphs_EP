@@ -3,14 +3,13 @@ def earliest_ancestor(ancestors, starting_node):
     vertices = {}
     # add each
     for pair in ancestors:
-        if pair[0] not in vertices:
-            vertices[pair[0]] = set()
         if pair[1] not in vertices:
             vertices[pair[1]] = set()
-        vertices[pair[0]].add(pair[1])
         vertices[pair[1]].add(pair[0])
+    print(vertices)
     # establish visited cache, use a set
     visited = set()
+    visited_list = []
     stack = []
     stack.append(starting_node)
     while len(stack) > 0:
@@ -19,8 +18,15 @@ def earliest_ancestor(ancestors, starting_node):
         # if it hasn't been visited
         if vertex not in visited:
             # print and add it to visited
-            print(vertex)
             visited.add(vertex)
-        # add all of its neighbors to the stack
-        for ancestor_node in vertices[vertex]:
-            stack.append(ancestor_node)
+            visited_list.append(vertex)
+            # add all of its neighbors to the stack
+            print(vertex)
+            latest_ancestor = vertices.get(vertex)
+            if latest_ancestor:
+                for ancestor in latest_ancestor:
+                    stack.append(ancestor)
+    if len(visited_list) == 1:
+        return -1
+    else:
+        return visited_list[-1]
