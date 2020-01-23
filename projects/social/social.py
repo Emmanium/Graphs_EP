@@ -57,9 +57,12 @@ class SocialGraph:
             # Create friendships
             # total_friendships = avg_friendships * num_users
 
-            # create a list with all possible friendship combinations
+        # create a list with all possible friendship combinations
         possible_friendships = []
         for user_id in self.users:
+            # the counter starts at user_id + 1 and ends at last_id + 1 BECAUSE...
+            # friend_id needs be in the correct number range. User_IDs start at 1 AND...
+            # python's range() doesn't end at the last number, so last_id needs to be + 1 as well
             for friend_id in range(user_id + 1, self.last_id + 1):
                 possible_friendships.append((user_id, friend_id))
 
@@ -67,7 +70,8 @@ class SocialGraph:
         random.shuffle(possible_friendships)
         # then grab the first N elements from the list
         # number of times to add_friendships = avg_friendships * num_users / 2
-        for i in range(num_users * avg_friendships // 2):
+        # for i in range(num_users * avg_friendships // 2):
+        for i in range(num_users):
             friendship = possible_friendships[i]
             self.add_friendship(friendship[0], friendship[1])
 
