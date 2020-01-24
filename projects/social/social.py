@@ -86,6 +86,20 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        queue = [[user_id]]
+
+        while len(queue) > 0:
+            path = queue.pop(0)
+            latest_node = visited.get(path[-1])
+            if latest_node:
+                pass
+            else:
+                visited[latest_node] = True
+                for neighbor in self.friendships[latest_node]:
+                    new_path = path.copy()
+                    new_path.append(neighbor)
+                    queue.append(new_path)
+
         return visited
 
 
