@@ -94,8 +94,8 @@ class SocialGraph:
             if latest_node:
                 pass
             else:
-                visited[latest_node] = True
-                for neighbor in self.friendships[latest_node]:
+                visited[path[-1]] = path
+                for neighbor in self.friendships[path[-1]]:
                     new_path = path.copy()
                     new_path.append(neighbor)
                     queue.append(new_path)
