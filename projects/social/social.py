@@ -90,10 +90,8 @@ class SocialGraph:
 
         while len(queue) > 0:
             path = queue.pop(0)
-            latest_node = visited.get(path[-1])
-            if latest_node:
-                pass
-            else:
+            latest_vertex = path[-1]
+            if latest_vertex not in visited:
                 visited[path[-1]] = path
                 for neighbor in self.friendships[path[-1]]:
                     new_path = path.copy()
