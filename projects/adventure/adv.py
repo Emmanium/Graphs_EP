@@ -37,24 +37,35 @@ class Graph:
     def add_room(self, room_id):
         self.world[room_id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
 
-    def add_connected_room(self, room1, room2, cardinal_direction, cardinal_direction_inverse):
+    def add_connected_room(self, room1, room2, cardinal_direction):
         if room1 and room2 in self.world:
             self.world[room1][cardinal_direction] = room2
+            cardinal_direction_inverse = self.cardinal_direction_inverse(
+                cardinal_direction)
             self.world[room2][cardinal_direction_inverse] = room1
 
-    def bfs(curr_room_id, unexplored_room='?'):
+    def cardinal_direction_inverse(self, cardinal_direction):
+        if cardinal_direction == 'n':
+            return 's'
+        if cardinal_direction == 's':
+            return 'n'
+        if cardinal_direction == 'w':
+            return 'e'
+        if cardinal_direction == 'e':
+            return 'w'
+
+    def bfs(self, curr_room_id, unexplored_room='?'):
         queue = [curr_room_id]
-        visited = set()
 
         while len(queue) > 0:
-            room = queue.pop(0)
-            if world[curr_room_id]['n'] == unexplored_room:
+            curr_room_id = queue.pop(0)
+            if self.world[curr_room_id]['n'] == unexplored_room:
                 return 'n'
-            elif world[curr_room_id]['s'] == unexplored_room:
+            elif self.world[curr_room_id]['s'] == unexplored_room:
                 return 's'
-            elif world[curr_room_id]['w'] == unexplored_room:
+            elif self.world[curr_room_id]['w'] == unexplored_room:
                 return 'w'
-            elif world[curr_room_id]['e'] == unexplored_room:
+            elif self.world[curr_room_id]['e'] == unexplored_room:
                 return 'e'
 
 
@@ -68,26 +79,33 @@ print("curr room:", player.travel('n'))
 
 
 def world_traversal(starting_room):
-    stack = [starting_room]
+    move_options = player.current_room.get_exits()
+    random.shuffle(move_options)
+    initial_direction = move_options[0]
+    # stack will hold tuples of the room_id and a cardinal direction, to let us know what direction we need to move in still)
+    stack = [(starting_room, initial_direction)]
     visited = set()
-    # get an initial array of the possible directions to move in
-    initial_move_options = player.current_room.get_exits()
-    random.shuffle(initial_move_options)
 
     while len(stack) > 0:
         room_id = stack.pop()
+        # move_options is an array of the possible directions to move in
+        move_options = player.current_room.get_exits()
         if room_id not in visited:
             visited.add(room_id)
             # add the current room to the world_graph room vertices
             world_graph.add_room(room_id)
             # keep a track of the current room ID
-            curr_id = room_id
+            old_id = room_id
             # move in a random direction
-            player.travel(initial_move_options[0])
+            player.travel()
+            # append traveled direction to traveral_path
             traversal_path.append()
+            # add connected room paths to world_graph dictionary
+            world_graph.add_connected_room(
+                old_id, player.current_room.id, )
 
 
-dfs(player.current_room.id)
+world_traversal(player.current_room.id)
 
 # TRAVERSAL TEST
 visited_rooms = set()
